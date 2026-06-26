@@ -1,59 +1,61 @@
-# GimnasioReservas
+# Sistema de Reservas de Turnos - Gimnasio 🏋️
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.17.
+Aplicación web responsiva para gestionar la visualización y reserva de clases de un gimnasio en tiempo real.
 
-## Development server
+## 🚀 1. Instrucciones de Instalación y Ejecución
 
-To start a local development server, run:
+Sigue estos pasos para clonar y ejecutar el entorno de desarrollo local:
 
-```bash
-ng serve
-```
+1. **Instalar dependencias del proyecto**:
+   ```bash
+   npm install
+   ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+2. **Levantar el servidor local con ng serve**:
 
-## Code scaffolding
+   ```bash
+   npm start
+   ```
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+   Una vez iniciado, abre en tu navegador la dirección: [http://localhost:4200/](http://localhost:4200/).
 
-```bash
-ng generate component component-name
-```
+3. **Ejecutar pruebas unitarias (Vitest)**:
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+   ```bash
+   npm test
+   ```
 
-```bash
-ng generate --help
-```
+## 🛠️ 2. Versiones Utilizadas
 
-## Building
+- **Node.js**: v25.9.0
+- **Angular CLI & Build Tools**: v21.2.17
+- **Angular Core**: v21.2.0
+- **TypeScript**: v5.9.2
+- **Test Runner**: Vitest v4.0.8
 
-To build the project run:
+## 🏛️ 3. Arquitectura de Componentes y Estrategia de Comunicación
 
-```bash
-ng build
-```
+### Estructura de Componentes
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+La aplicación se organiza por responsabilidades limpias en carpetas (`core/` globales y `features/` del negocio):
 
-## Running unit tests
+- **AppComponent**: Layout principal y contenedor de la aplicación.
+- **BookingsLayoutComponent**: Distribución responsiva en rejilla con CSS Grid nativo.
+- **BookingListComponent**: Renderiza la lista de clases y maneja los estados visuales (*Loading*, *Error*, *Empty State*).
+- **BookingCardComponent**: Tarjeta individual atómica que recibe la data mediante `@Input()` y notifica clics mediante `@Output()`.
+- **BookingDetailComponent**: Panel que muestra los detalles del turno seleccionado y aloja la acción de reservar.
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### Estrategia de Comunicación Elegida
 
-```bash
-ng test
-```
+La comunicación entre `BookingListComponent` y `BookingDetailComponent` se resuelve mediante un **servicio compartido (`BookingService`)**.
 
-## Running end-to-end tests
+- **Justificación**: `BookingListComponent` selecciona una clase y la guarda en el servicio, mientras que `BookingDetailComponent` lee ese mismo estado para renderizar el detalle. Aunque la rúbrica permite `Subject` / `BehaviorSubject`, en esta implementación se usa **Angular Signals** como estado reactivo centralizado, evitando suscripciones manuales y manteniendo ambos componentes desacoplados.
 
-For end-to-end (e2e) testing, run:
+## 🌐 4. Simulación de la API
 
-```bash
-ng e2e
-```
+La aplicación simula el consumo asíncrono de un endpoint REST real utilizando el cliente nativo `HttpClient`:
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+- El servicio intenta consultar el endpoint ficticio `GET https://api.gimnasio.local/bookings`.
+- Mediante un pipe con los operadores `delay(1000)` y `catchError` de RxJS, se intercepta la caída programada de la URL para inyectar una colección inmutable de datos mockeados tras un segundo de latencia.
+- Esto permite emular de manera fidedigna los tiempos de respuesta y validar el comportamiento de los estados de carga de la UI.
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
