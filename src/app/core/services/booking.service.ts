@@ -2,7 +2,7 @@ import { Injectable, signal, computed, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { delay, catchError, tap } from 'rxjs/operators';
-import { Booking } from '../models/booking.models';
+import { Booking } from '../models/booking.model';
 
 @Injectable({
   providedIn: 'root'
