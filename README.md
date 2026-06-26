@@ -59,3 +59,5 @@ La aplicación simula el consumo asíncrono de un endpoint REST real utilizando 
 - Mediante un pipe con los operadores `delay(1000)` y `catchError` de RxJS, se intercepta la caída programada de la URL para inyectar una colección inmutable de datos mockeados tras un segundo de latencia.
 - Esto permite emular de manera fidedigna los tiempos de respuesta y validar el comportamiento de los estados de carga de la UI.
 
+
+🔗 **Link del Deploy**: [https://marianaagrcg.github.io/gimnasio-reservas/](https://marianaagrcg.github.io/gimnasio-reservas/)
